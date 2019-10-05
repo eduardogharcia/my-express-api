@@ -1,14 +1,17 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const routes = require('./routes')
 
 const app = express()
 
-mongoose.connect('mongodb+srv://xofer:x034!@@45Y@xofer-wqvjq.mongodb.net/xofer?retryWrites=true&w=majority', {
+// Connect to mongodb
+mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 
+// Middlewares
 app.use(express.json())
 app.use(routes)
 

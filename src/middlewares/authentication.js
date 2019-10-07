@@ -12,12 +12,12 @@ const authorization = (req, res, next) => {
     return
   }
 
-  try{
+  try {
     const verified = jwt.verify(token.replace('Bearer', '').trim(), process.env.SECRET)
     req.user = verified
-  
+
     // @TODO update jwt validate date
-  
+
     next()
   } catch (err) {
     res.status(401).json({ error: 'Invalid token' })

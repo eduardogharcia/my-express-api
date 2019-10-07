@@ -8,7 +8,7 @@ const app = express()
 // Connect to mongodb
 mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 })
 
 // Middlewares

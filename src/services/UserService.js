@@ -6,11 +6,11 @@ const bcript = require('bcryptjs')
  * @return User model
  */
 const getUserById = async (id) => {
-  return await User.findOne({ _id: id })
+  return User.findOne({ _id: id })
 }
 
 /**
- * 
+ *
  * @param {String} email Email address of the user
  * @return User model
  */
@@ -20,8 +20,8 @@ const getUserByEmail = async (email) => {
 }
 
 /**
- * 
- * @param {Object} user 
+ *
+ * @param {Object} user
  * @return User model just created
  */
 const saveNewUser = async (user) => {
@@ -34,22 +34,21 @@ const saveNewUser = async (user) => {
   // hash password
   user.password = await hashPassword(user.password)
 
-  return await user.save()
+  return user.save()
 }
 
 /**
- * 
- * @param {String} password 
+ *
+ * @param {String} password
  * @return Password hashed to store
  */
 const hashPassword = async (password) => {
   const salt = await bcript.genSalt(10)
-  hashedPass = await bcript.hash(password, salt)
-  return hashPassword
+  return bcript.hash(password, salt)
 }
 
 /**
- * 
+ *
  * @param {String} id Id of a user
  * @param {Object} userData All user information
  * @return User object just updated

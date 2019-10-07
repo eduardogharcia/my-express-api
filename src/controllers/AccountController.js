@@ -15,17 +15,16 @@ module.exports = {
 
     // User must be unique
     const userAlreadyExist = await UserService.getUserByEmail(req.body.email)
-    if (userAlreadyExist) return res.status(400).send({error: 'User Already exists'})
-    
+    if (userAlreadyExist) return res.status(400).send({ error: 'User Already exists' })
+
     try {
       const savedUser = await UserService.saveNewUser({
         email: req.body.email,
         name: req.body.name,
-        password:  req.body.password
+        password: req.body.password
       })
 
       res.status(201).json(savedUser)
-      
     } catch (err) {
       res.status(400).send(err)
     }

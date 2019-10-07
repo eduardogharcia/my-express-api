@@ -2,9 +2,9 @@ const User = require('./../models/User')
 const bcript = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-async function createNewSessionByEmailAndPassword(email, password) {
+async function createNewSessionByEmailAndPassword (email, password) {
   const user = await User.findOne({ email })
-  if (!user){
+  if (!user) {
     throw new Error('User invalid')
   }
 

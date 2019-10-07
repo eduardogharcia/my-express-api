@@ -1,4 +1,4 @@
-const UserService = require('./../services/UserService')
+const UserService = require('../services/UserService')
 
 // index, show, create, update, destroy
 module.exports = {
@@ -23,15 +23,17 @@ module.exports = {
         name: req.body.name,
         password:  req.body.password
       })
-      res.json(savedUser)
+
+      res.status(201).json(savedUser)
+      
     } catch (err) {
       res.status(400).send(err)
     }
   },
   async update (req, res) {
-    res.send('é...')
-    // const user = await UserService.getUserById(req.user)
-    // if (!user) return res.status(404)
-
+    const user = await UserService.getUserById(req.user)
+    if (!user) return res.status(404)
+    const updatedUser = await UserService.updateUserById(user._id, req.user)
+    res.json(updatedUser)
   }
 }

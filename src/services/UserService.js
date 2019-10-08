@@ -6,7 +6,7 @@ const bcript = require('bcryptjs')
  * @return User model
  */
 const getUserById = async (id) => {
-  return User.findOne({ _id: id })
+  return User.findOne({ _id: id }).select('-password')
 }
 
 /**
@@ -15,24 +15,29 @@ const getUserById = async (id) => {
  * @return User model
  */
 const getUserByEmail = async (email) => {
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ email }).select('-password')
   return user
 }
 
 /**
  *
- * @param {Object} user
+ * @param {Object} userData
  * @return User model just created
  */
-const saveNewUser = async (user) => {
-  const userAlreadyExists = await getUserByEmail(user.email)
+const saveNewUser = async (userData) => {
+  const userAlreadyExists = await getUserByEmail(userData.email)
 
   if (userAlreadyExists) {
     throw new Error('User already exists')
   }
 
   // hash password
-  user.password = await hashPassword(user.password)
+  userData.password = await hashPassword(userData.password)
+
+  const user = new User({
+    ...userData,
+    password: userData.password
+  })
 
   return user.save()
 }

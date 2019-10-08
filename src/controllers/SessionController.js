@@ -8,7 +8,7 @@ module.exports = {
       res.status(201).json({ jwt: token })
     } catch (err) {
       res.status(400).json({
-        error: err.message
+        message: err.message
       })
     }
   },

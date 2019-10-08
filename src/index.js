@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 const helmet = require('helmet')
 const routes = require('./routes')
 
@@ -13,9 +14,8 @@ mongoose.connect(process.env.MONGO_CONNECTION, {
 })
 
 // Middlewares
-app.use(helmet({
-  noCache: true
-}))
+app.use(cors())
+app.use(helmet({ noCache: true }))
 app.use(express.json())
 app.use(routes)
 

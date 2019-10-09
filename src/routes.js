@@ -11,14 +11,16 @@ const SessionController = require('./controllers/SessionController')
 const AccountController = require('./controllers/AccountController')
 
 // Routes
-// -- Session (login/logout)
-routes.post('/session', SessionController.create)
-routes.delete('/session', Auth.authentication, SessionController.destroy)
+// -- Session
+routes.post('/session/login', SessionController.create)
+routes.delete('/session/logout', Auth.authentication, SessionController.destroy)
+routes.post('/session/forgot-password', SessionController.update)
 
-// -- User
-routes.get('/account', Auth.authentication, AccountController.show)
-routes.post('/account', AccountController.create)
-routes.put('/account', Auth.authentication, AccountController.update)
+// -- User - single resource route
+routes.get('/account', Auth.authentication, AccountController.show) // view accout
+routes.post('/account', AccountController.create) // create new acount
+routes.put('/account', Auth.authentication, AccountController.update) // update acount
+routes.put('/account/reset-password/:resetpasstoken', AccountController.updatePassword) // update password
 
 // -- User Credit cards
 routes.get('/account/credit-cards', Auth.authentication, () => {})

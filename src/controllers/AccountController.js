@@ -1,4 +1,5 @@
 const UserService = require('../services/UserService')
+const Joi = require('@hapi/joi')
 
 // index, show, create, update, destroy
 module.exports = {
@@ -8,7 +9,12 @@ module.exports = {
     res.send(user)
   },
   async create (req, res) {
-    // @todo validate sent data
+    // Validate data
+    const validatedData = createAccountSchema.validate(req.body, { abortEarly: false })
+    if (validatedData.error) {
+      res.status(422).json(validatedData.error)
+      return
+    }
 
     // User must be unique
     const userAlreadyExist = await UserService.getUserByEmail(req.body.email)
@@ -16,9 +22,7 @@ module.exports = {
 
     try {
       const savedUser = await UserService.saveNewUser({
-        email: req.body.email,
-        name: req.body.name,
-        password: req.body.password,
+        ...validatedData.value,
         roles: ['user']
       })
 
@@ -32,5 +36,14 @@ module.exports = {
     if (!user) return res.status(404)
     const updatedUser = await UserService.updateUserById(user._id, req.user)
     res.json(updatedUser)
+  },
+  async updatePassword (req, res) {
+    res.send('update password account')
   }
 }
+
+const createAccountSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+  name: Joi.string().min(3).max(30).required()
+})

@@ -12,6 +12,9 @@ module.exports = {
       })
     }
   },
+  update (req, res) {
+    res.send('update sesstion')
+  },
   async destroy (req, res) {
     res.send('Logout')
   }

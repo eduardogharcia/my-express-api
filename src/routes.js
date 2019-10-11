@@ -11,6 +11,13 @@ const SessionController = require('./controllers/SessionController')
 const AccountController = require('./controllers/AccountController')
 
 // Routes
+// -- base
+routes.get('/', (req, res) => {
+  res.json({
+    version: 0.01
+  })
+})
+
 // -- Session
 routes.post('/session/login', SessionController.create)
 routes.delete('/session/logout', Auth.authentication, SessionController.destroy)

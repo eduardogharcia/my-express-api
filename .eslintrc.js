@@ -15,5 +15,14 @@ module.exports = {
     ecmaVersion: 2018
   },
   rules: {
-  }
+  },
+  overrides: [
+    {
+      files: ['*.test.js'],
+      rules: {
+        "no-unused-expressions": "off",
+        "handle-callback-err": "off"
+      }
+    }
+  ]
 }

@@ -9,7 +9,7 @@ const UserService = require('./../services/UserService')
 const authentication = async (req, res, next) => {
   const token = req.header('Authorization')
   if (!token) {
-    res.status(400).json({ message: 'Authentication token not found' })
+    res.status(400).json({ errors: [{ message: 'Authentication token not found' }] })
     return
   }
 
@@ -21,7 +21,7 @@ const authentication = async (req, res, next) => {
 
     next()
   } catch (err) {
-    res.status(401).json({ message: 'Invalid token' })
+    res.status(401).json({ errors: [{ message: 'Invalid token' }] })
   }
 }
 
@@ -34,6 +34,6 @@ const authorization = (roles) => (req, res, next) => {
     next()
     return
   }
-  res.status(403).json({ message: 'Invalid privileges' })
+  res.status(403).json({ errors: [{ message: 'Invalid privileges' }] })
 }
 module.exports = { authentication, authorization }

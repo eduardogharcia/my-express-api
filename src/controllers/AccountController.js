@@ -5,7 +5,7 @@ const Joi = require('@hapi/joi')
 module.exports = {
   async show (req, res) {
     const user = await UserService.getUserById(req.user)
-    if (!user) return res.status(404)
+    if (!user) return res.status(404).send({ errors: [{ message: 'User not found' }] })
     res.send(user)
   },
   async create (req, res) {

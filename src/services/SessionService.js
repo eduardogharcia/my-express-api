@@ -2,15 +2,17 @@ const User = require('./../models/User')
 const bcript = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+const ClientError = require('../helpers/ClientError')
+
 async function createNewSessionByEmailAndPassword (email, password) {
   const user = await User.findOne({ email })
   if (!user) {
-    throw new Error('User invalid')
+    throw new ClientError('User invalid')
   }
 
   const validPassword = await bcript.compare(password, user.password)
   if (!validPassword) {
-    throw new Error('Invalid password ')
+    throw new ClientError('Invalid password')
   }
 
   // create token

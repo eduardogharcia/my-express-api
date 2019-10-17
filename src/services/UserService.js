@@ -1,6 +1,8 @@
 const User = require('./../models/User')
 const bcript = require('bcryptjs')
 
+const ClientError = require('../helpers/ClientError')
+
 /**
  * @param {String} id User id
  * @return User model
@@ -28,7 +30,7 @@ const saveNewUser = async (userData) => {
   const userAlreadyExists = await getUserByEmail(userData.email)
 
   if (userAlreadyExists) {
-    throw new Error('User already exists')
+    throw new ClientError('User already exists')
   }
 
   // hash password
@@ -62,7 +64,7 @@ const updateUserById = async (id, userData) => {
   const user = await getUserByEmail(id)
 
   if (!user) {
-    throw new Error('User not exists')
+    throw new ClientError('User not exists')
   }
   userData.email = user.email // preventing change e-mail
   userData.password = await hashPassword(userData.password)

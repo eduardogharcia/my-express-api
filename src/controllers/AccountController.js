@@ -1,40 +1,31 @@
 const UserService = require('../services/UserService')
 const Joi = require('@hapi/joi')
+const validateSchema = require('../helpers/validateSchema')
 
 // index, show, create, update, destroy
 module.exports = {
   async show (req, res) {
     const user = await UserService.getUserById(req.user)
+    if (!user) throw new Error('User not found')
     if (!user) return res.status(404).send({ errors: [{ message: 'User not found' }] })
     res.send(user)
   },
   async create (req, res) {
     // Validate data
-    const validatedData = createAccountSchema.validate(req.body, { abortEarly: false })
-    if (validatedData.error) {
-      res.status(422).json(validatedData.error)
-      return
-    }
+    const validatedData = validateSchema(req.body, createAccountSchema)
 
-    // User must be unique
-    const userAlreadyExist = await UserService.getUserByEmail(req.body.email)
-    if (userAlreadyExist) return res.status(400).send({ message: 'User Already exists' })
+    const savedUser = await UserService.saveNewUser({
+      ...validatedData.value,
+      roles: ['user']
+    })
 
-    try {
-      const savedUser = await UserService.saveNewUser({
-        ...validatedData.value,
-        roles: ['user']
-      })
-
-      res.status(201).json(savedUser)
-    } catch (err) {
-      res.status(400).send(err.message)
-    }
+    res.status(201).json(savedUser)
   },
   async update (req, res) {
-    const user = await UserService.getUserById(req.user)
-    if (!user) return res.status(404)
-    const updatedUser = await UserService.updateUserById(user._id, req.user)
+    // Validate data
+    const validatedData = validateSchema(req.body, createAccountSchema)
+
+    const updatedUser = await UserService.updateUserById(req.user._id, validatedData)
     res.json(updatedUser)
   },
   async updatePassword (req, res) {

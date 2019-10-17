@@ -2,6 +2,8 @@ const express = require('express')
 const routes = express.Router()
 
 // Middlewares
+const errorHandler = require('./middlewares/ErrorHandler')
+// const asyncHandler = require('./middlewares/AsyncHandler')
 const Auth = require('./middlewares/Auth')
 const mustBeAdmin = Auth.authorization(['admin'])
 const mustBeDriver = Auth.authorization(['driver'])
@@ -66,5 +68,7 @@ routes.delete('/users/:id/cars/:id', Auth.authentication, mustBeAdmin, () => {})
 routes.get('/users/:id/credit-cards', Auth.authentication, mustBeAdmin, () => {})
 routes.post('/users/:id/credit-cards', Auth.authentication, mustBeAdmin, () => {})
 routes.delete('/users/:id/credit-cards/:id', Auth.authentication, mustBeAdmin, () => {})
+
+routes.use(errorHandler)
 
 module.exports = routes

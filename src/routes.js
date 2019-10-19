@@ -2,8 +2,6 @@ const express = require('express')
 const routes = express.Router()
 
 // Middlewares
-const errorHandler = require('./middlewares/ErrorHandler')
-// const asyncHandler = require('./middlewares/AsyncHandler')
 const Auth = require('./middlewares/Auth')
 const mustBeAdmin = Auth.authorization(['admin'])
 const mustBeDriver = Auth.authorization(['driver'])
@@ -40,11 +38,11 @@ routes.get('/account/favorite-drivers', Auth.authentication, () => {})
 routes.post('/account/favorite-drivers', Auth.authentication, () => {})
 routes.delete('/account/favorite-drivers/:id', Auth.authentication, () => {})
 
-// -- Driver's Cars
+// -- Driver's vehicles
 // @todo must be driver
-routes.get('/account/cars', Auth.authentication, mustBeDriver, () => {})
-routes.post('/account/cars', Auth.authentication, mustBeDriver, () => {})
-routes.delete('/account/cars/:id', Auth.authentication, mustBeDriver, () => {})
+routes.get('/account/vehicles', Auth.authentication, mustBeDriver, () => {})
+routes.post('/account/vehicles', Auth.authentication, mustBeDriver, () => {})
+routes.delete('/account/vehicles/:id', Auth.authentication, mustBeDriver, () => {})
 
 // -- Drivers
 routes.get('/drivers', Auth.authentication, () => {})
@@ -59,16 +57,14 @@ routes.get('/users', Auth.authentication, mustBeAdmin, () => {})
 routes.post('/users', Auth.authentication, mustBeAdmin, () => {})
 routes.delete('/users/:id', Auth.authentication, mustBeAdmin, () => {})
 
-// User's (drivers) cars
-routes.get('/users/:id/cars', Auth.authentication, mustBeAdmin, () => {})
-routes.post('/users/:id/cars', Auth.authentication, mustBeAdmin, () => {})
-routes.delete('/users/:id/cars/:id', Auth.authentication, mustBeAdmin, () => {})
+// User's (drivers) vehicles
+routes.get('/users/:id/vehicles', Auth.authentication, mustBeAdmin, () => {})
+routes.post('/users/:id/vehicles', Auth.authentication, mustBeAdmin, () => {})
+routes.delete('/users/:id/vehicles/:id', Auth.authentication, mustBeAdmin, () => {})
 
 // User's (drivers) credit-cards
 routes.get('/users/:id/credit-cards', Auth.authentication, mustBeAdmin, () => {})
 routes.post('/users/:id/credit-cards', Auth.authentication, mustBeAdmin, () => {})
 routes.delete('/users/:id/credit-cards/:id', Auth.authentication, mustBeAdmin, () => {})
-
-routes.use(errorHandler)
 
 module.exports = routes

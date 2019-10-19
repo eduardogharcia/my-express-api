@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken')
 const UserService = require('./../services/UserService')
+const ClientError = require('../helpers/ClientError')
+
 /**
  * Authentication middleware
  * @param {Object} req Express request object
@@ -9,8 +11,7 @@ const UserService = require('./../services/UserService')
 const authentication = async (req, res, next) => {
   const token = req.header('Authorization')
   if (!token) {
-    res.status(400).json({ errors: [{ message: 'Authentication token not found' }] })
-    return
+    throw new ClientError('Authentication token not found', 401)
   }
 
   try {
@@ -21,7 +22,7 @@ const authentication = async (req, res, next) => {
 
     next()
   } catch (err) {
-    res.status(401).json({ errors: [{ message: 'Invalid token' }] })
+    throw new ClientError('Invalid Token', 401)
   }
 }
 
@@ -34,6 +35,6 @@ const authorization = (roles) => (req, res, next) => {
     next()
     return
   }
-  res.status(403).json({ errors: [{ message: 'Invalid privileges' }] })
+  throw new ClientError('Invalid privileges', 403)
 }
 module.exports = { authentication, authorization }

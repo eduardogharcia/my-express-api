@@ -4,13 +4,12 @@
 
 Ok
 - 200: 0K
-- 201: Created (after create new resource (post))
 
 Client Errors
+- 400: General errors
 - 401: Unauthorized (unauthenticated, not logged in)
 - 403: logged in by invalid privileges
 - 404: Resource not found
-- 422: Bad input validation
 
 Server Errors
 - 500: Server general problem
